@@ -38,20 +38,68 @@ function updateSubModels() {
         modelSelect.appendChild(option);
     });
     
+    modelSelect.value = seriesModels[series][0];
+    
     syncLimits();
 }
 
-function syncLimits() {
+function updateTotalStrokeOptions() {
+    const series = document.getElementById('seriesSelect').value;
     const model = document.getElementById('modelSelect').value;
     if (!model || !limits[model]) return;
     const limit = limits[model];
     
+    const strokeSelect = document.getElementById('totalStrokeSelect');
+    // Save current selection if exists to persist it if possible
+    let currentVal = strokeSelect.value;
+    strokeSelect.innerHTML = '';
+    
+    const optStd = document.createElement('option');
+    optStd.value = limit.maxStroke;
+    optStd.text = `Standart Maks. Strok (${limit.maxStroke} mm)`;
+    strokeSelect.appendChild(optStd);
+    
+    if (series === 'SP-EH') {
+        const optOpt = document.createElement('option');
+        optOpt.value = 750;
+        optOpt.text = `Opsiyonel Maks. Strok (750 mm)`;
+        strokeSelect.appendChild(optOpt);
+    }
+    
+    // Restore if valid
+    if (currentVal && Array.from(strokeSelect.options).some(o => o.value === currentVal)) {
+        strokeSelect.value = currentVal;
+    }
+}
+
+function syncLimits() {
+    updateTotalStrokeOptions();
+    
+    const model = document.getElementById('modelSelect').value;
+    const series = document.getElementById('seriesSelect').value;
+    if (!model || !limits[model]) return;
+    const limit = limits[model];
+    
+    // Determine RPM max
+    let maxRpm = series === 'SP-EH' ? 3000 : 5500;
+    document.getElementById('rpmSlider').max = maxRpm;
+    document.getElementById('rpm').max = maxRpm;
+    
+    let rpmVal = parseFloat(document.getElementById('rpm').value);
+    if (rpmVal > maxRpm) {
+        document.getElementById('rpm').value = maxRpm;
+        document.getElementById('rpmSlider').value = maxRpm;
+        document.getElementById('valRPM').innerText = maxRpm + ' RPM';
+    }
+    
+    // Determine Current Max Stroke
+    let currentMaxStroke = parseFloat(document.getElementById('totalStrokeSelect').value) || limit.maxStroke;
+    
     // Adjust max attributes for force and stroke sliders
     document.getElementById('targetForceSlider').max = limit.maxForce;
-    document.getElementById('fastStrokeSlider').max = limit.maxStroke;
-    document.getElementById('searchStrokeSlider').max = limit.maxStroke;
-    document.getElementById('detectStrokeSlider').max = limit.maxStroke;
-    document.getElementById('pressStrokeSlider').max = limit.maxStroke;
+    document.getElementById('searchStrokeSlider').max = currentMaxStroke;
+    document.getElementById('detectStrokeSlider').max = currentMaxStroke;
+    document.getElementById('pressStrokeSlider').max = currentMaxStroke;
     
     // Validate current values
     let force = parseFloat(document.getElementById('targetForce').value);
@@ -62,18 +110,13 @@ function syncLimits() {
         document.getElementById('valForce').innerText = limit.maxForce + ' kN';
     }
     
-    let fastStr = parseFloat(document.getElementById('fastStroke').value) || 0;
     let searchStr = parseFloat(document.getElementById('searchStroke').value) || 0;
     let detectStr = parseFloat(document.getElementById('detectStroke').value) || 0;
     let pressStr = parseFloat(document.getElementById('pressStroke').value) || 0;
     
-    let total = fastStr + searchStr + detectStr + pressStr;
-    if (total > limit.maxStroke) {
+    let totalOther = searchStr + detectStr + pressStr;
+    if (totalOther > currentMaxStroke) {
         // Reset to safe defaults if model limit is exceeded
-        document.getElementById('fastStroke').value = limit.maxStroke * 0.5;
-        document.getElementById('fastStrokeSlider').value = limit.maxStroke * 0.5;
-        document.getElementById('valFast').innerText = (limit.maxStroke * 0.5) + ' mm';
-        
         document.getElementById('searchStroke').value = 0;
         document.getElementById('searchStrokeSlider').value = 0;
         document.getElementById('valSearch').innerText = '0 mm';
@@ -85,11 +128,25 @@ function syncLimits() {
         document.getElementById('pressStroke').value = 0;
         document.getElementById('pressStrokeSlider').value = 0;
         document.getElementById('valPress').innerText = '0 mm';
+        totalOther = 0;
     }
+    
+    // Auto-calculate Fast Stroke
+    let fastStr = currentMaxStroke - totalOther;
+    document.getElementById('fastStroke').value = fastStr;
+    document.getElementById('fastStrokeSlider').value = fastStr;
+    document.getElementById('fastStrokeSlider').max = currentMaxStroke;
+    document.getElementById('valFast').innerText = fastStr + ' mm';
+    
     runSimulation();
 }
 
 function syncInputs(sourceId, value) {
+    if (sourceId === 'totalStroke') {
+        syncLimits();
+        return;
+    }
+
     const limit = limits[document.getElementById('modelSelect').value];
     let val = parseFloat(value) || 0;
 
@@ -102,16 +159,17 @@ function syncInputs(sourceId, value) {
         document.getElementById(sliderId).value = val;
     }
     
+    let currentMaxStroke = parseFloat(document.getElementById('totalStrokeSelect').value) || limit.maxStroke;
+    
     // Validate stroke total if a stroke field is changed
     if (sourceId.includes('Stroke')) {
-        let fastStr = parseFloat(document.getElementById('fastStroke').value) || 0;
         let searchStr = parseFloat(document.getElementById('searchStroke').value) || 0;
         let detectStr = parseFloat(document.getElementById('detectStroke').value) || 0;
         let pressStr = parseFloat(document.getElementById('pressStroke').value) || 0;
         
-        let total = fastStr + searchStr + detectStr + pressStr;
-        if (total > limit.maxStroke) {
-            let excess = total - limit.maxStroke;
+        let totalOther = searchStr + detectStr + pressStr;
+        if (totalOther > currentMaxStroke) {
+            let excess = totalOther - currentMaxStroke;
             val = val - excess;
             if (val < 0) val = 0;
             
@@ -125,7 +183,18 @@ function syncInputs(sourceId, value) {
                 document.getElementById(sourceId).value = val;
                 document.getElementById(sliderId).value = val;
             }
+            // Recalculate totalOther with capped val
+            searchStr = parseFloat(document.getElementById('searchStroke').value) || 0;
+            detectStr = parseFloat(document.getElementById('detectStroke').value) || 0;
+            pressStr = parseFloat(document.getElementById('pressStroke').value) || 0;
+            totalOther = searchStr + detectStr + pressStr;
         }
+        
+        // Auto-calculate Fast Stroke
+        let fastStr = currentMaxStroke - totalOther;
+        document.getElementById('fastStroke').value = fastStr;
+        document.getElementById('fastStrokeSlider').value = fastStr;
+        document.getElementById('valFast').innerText = fastStr + ' mm';
     }
 
     let unit = " mm";
@@ -210,24 +279,27 @@ function calcPhase(stroke, target_v, start_v, t_acc_phase, t_dec_phase, is_forwa
 
 function runSimulation() {
     let rpm = parseFloat(document.getElementById('rpm').value);
-    // Linear speed assumption based on pitch (e.g. 5mm lead -> (RPM/60)*5)
-    // Let's assume generic logic: Hızlı Yaklaşma = (rpm/60)*20, Arama=(rpm/60)*10, Algilama=10mm/s
+    
+    // EM process limits logic
+    let series = document.getElementById('seriesSelect').value;
+    let maxProcessRpm = series === 'SP-EM' ? Math.min(rpm, 4000) : rpm;
+    
     let v_fast = (rpm / 60.0) * 10; 
-    let v_search = (rpm / 60.0) * 2; 
+    let v_search = (maxProcessRpm / 60.0) * 2; 
     let v_detect = 10.0; // fixed low speed
     let v_press = 5.0; // fixed low speed
     
-    let fastStroke = parseFloat(document.getElementById('fastStroke').value);
-    let searchStroke = parseFloat(document.getElementById('searchStroke').value);
-    let detectStroke = parseFloat(document.getElementById('detectStroke').value);
-    let pressStroke = parseFloat(document.getElementById('pressStroke').value);
+    let fastStroke = parseFloat(document.getElementById('fastStroke').value) || 0;
+    let searchStroke = parseFloat(document.getElementById('searchStroke').value) || 0;
+    let detectStroke = parseFloat(document.getElementById('detectStroke').value) || 0;
+    let pressStroke = parseFloat(document.getElementById('pressStroke').value) || 0;
     
     let phases = [
         { name: 'Hızlı Yaklaşma', stroke: fastStroke, v: v_fast, t_acc: 0.25, t_dec: 0.0, color: 'rgba(33, 150, 243, 0.3)' },
         { name: 'Temas Arama', stroke: searchStroke, v: v_search, t_acc: 0.25, t_dec: 0.0, color: 'rgba(255, 152, 0, 0.3)' },
         { name: 'Temas Algılama', stroke: detectStroke, v: v_detect, t_acc: 0.0, t_dec: 0.0, color: 'rgba(255, 193, 7, 0.3)' },
         { name: 'Kontrollü Presleme', stroke: pressStroke, v: v_press, t_acc: 0.0, t_dec: 0.0, color: 'rgba(244, 67, 54, 0.3)' },
-        { name: 'Bekleme (0.5s)', stroke: 0, v: 0, t_acc: 0, t_dec: 0, color: 'rgba(156, 39, 176, 0.3)', is_wait: true, duration: 0.5 },
+        { name: 'Bekleme (1.0s)', stroke: 0, v: 0, t_acc: 0, t_dec: 0, color: 'rgba(156, 39, 176, 0.3)', is_wait: true, duration: 1.0 },
         { name: 'Kontrollü Geri Çekilme', stroke: (fastStroke+searchStroke+detectStroke+pressStroke), v: -v_fast, t_acc: 0.25, t_dec: 0.25, color: 'rgba(76, 175, 80, 0.3)', is_forward: false }
     ];
     

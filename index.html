@@ -52,45 +52,52 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                <label for="totalStrokeSelect">Kullanılacak Toplam Strok</label>
+                <select id="totalStrokeSelect" class="form-control" onchange="syncLimits()">
+                    <!-- Options populated by JS (Standard vs Optional) -->
+                </select>
+            </div>
+
             <h2 style="margin-top: 30px;">Kinematik Fazlar (dt=0.001s, a=0.25s rampa)</h2>
 
             <div class="form-group">
-                <label for="fastStrokeSlider">Hızlı Yaklaşma Stroku <span class="val-display" id="valFast">100 mm</span></label>
-                <div class="input-group">
-                    <input type="range" id="fastStrokeSlider" min="0" max="500" value="100" step="10" oninput="syncInputs('fastStroke', this.value)">
-                    <input type="number" id="fastStroke" class="form-control input-number-small" value="100" min="0" oninput="syncInputs('fastStrokeSlider', this.value)">
+                <label>Hızlı Yaklaşma Stroku (Otomatik) <span class="val-display" id="valFast">100 mm</span></label>
+                <div class="input-group" style="opacity: 0.6; pointer-events: none;">
+                    <input type="range" id="fastStrokeSlider" min="0" max="500" value="100">
+                    <input type="number" id="fastStroke" class="form-control input-number-small" value="100" readonly>
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="searchStrokeSlider">Temas Arama Stroku <span class="val-display" id="valSearch">30 mm</span></label>
                 <div class="input-group">
-                    <input type="range" id="searchStrokeSlider" min="0" max="100" value="30" step="1" oninput="syncInputs('searchStroke', this.value)">
-                    <input type="number" id="searchStroke" class="form-control input-number-small" value="30" min="0" oninput="syncInputs('searchStrokeSlider', this.value)">
+                    <input type="range" id="searchStrokeSlider" min="0" max="100" value="30" step="10" oninput="syncInputs('searchStroke', this.value)">
+                    <input type="number" id="searchStroke" class="form-control input-number-small" value="30" min="0" step="10" oninput="syncInputs('searchStrokeSlider', this.value)">
                 </div>
             </div>
             
             <div class="form-group">
                 <label for="detectStrokeSlider">Temas Algılama Stroku <span class="val-display" id="valDetect">10 mm</span></label>
                 <div class="input-group">
-                    <input type="range" id="detectStrokeSlider" min="0" max="50" value="10" step="1" oninput="syncInputs('detectStroke', this.value)">
-                    <input type="number" id="detectStroke" class="form-control input-number-small" value="10" min="0" oninput="syncInputs('detectStrokeSlider', this.value)">
+                    <input type="range" id="detectStrokeSlider" min="0" max="50" value="10" step="10" oninput="syncInputs('detectStroke', this.value)">
+                    <input type="number" id="detectStroke" class="form-control input-number-small" value="10" min="0" step="10" oninput="syncInputs('detectStrokeSlider', this.value)">
                 </div>
             </div>
 
             <div class="form-group">
                 <label for="pressStrokeSlider">Kontrollü Presleme Stroku <span class="val-display" id="valPress">50 mm</span></label>
                 <div class="input-group">
-                    <input type="range" id="pressStrokeSlider" min="0" max="100" value="50" step="1" oninput="syncInputs('pressStroke', this.value)">
-                    <input type="number" id="pressStroke" class="form-control input-number-small" value="50" min="0" oninput="syncInputs('pressStrokeSlider', this.value)">
+                    <input type="range" id="pressStrokeSlider" min="0" max="100" value="50" step="10" oninput="syncInputs('pressStroke', this.value)">
+                    <input type="number" id="pressStroke" class="form-control input-number-small" value="50" min="0" step="10" oninput="syncInputs('pressStrokeSlider', this.value)">
                 </div>
             </div>
             
             <div class="form-group">
                 <label for="rpmSlider">Servo Motor Hızı (RPM) <span class="val-display" id="valRPM">1500 RPM</span></label>
                 <div class="input-group">
-                    <input type="range" id="rpmSlider" min="500" max="3000" value="1500" step="100" oninput="syncInputs('rpm', this.value)">
-                    <input type="number" id="rpm" class="form-control input-number-small" value="1500" min="500" max="3000" oninput="syncInputs('rpmSlider', this.value)">
+                    <input type="range" id="rpmSlider" min="500" max="3000" value="1500" step="500" oninput="syncInputs('rpm', this.value)">
+                    <input type="number" id="rpm" class="form-control input-number-small" value="1500" min="500" max="5500" step="500" oninput="syncInputs('rpmSlider', this.value)">
                 </div>
             </div>
         </div>
@@ -98,7 +105,7 @@
         <!-- RESULT SECTION -->
         <div class="result-section" style="display: block; opacity: 1; animation: none;">
             <div class="result-title">Dinamik Kinematik Grafiği</div>
-            <div id="chartDiv" style="width: 100%; height: 500px; background: #0d1117; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);"></div>
+            <div id="chartDiv" style="width: 100%; min-height: 600px; background: #0d1117; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);"></div>
             
             <div class="cycle-time-box" id="cycleTimeBox" style="margin-top: 25px;">
                 <span class="label">Tahmini Çevrim Süresi (Kinematik)</span>
@@ -108,6 +115,6 @@
     </div>
 </div>
 
-<script src="js/script.js"></script>
+<script src="js/script.js?v=2"></script>
 </body>
 </html>
