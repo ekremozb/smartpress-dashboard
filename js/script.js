@@ -46,8 +46,12 @@ function syncLimits() {
     if (!model || !limits[model]) return;
     const limit = limits[model];
     
-    // Adjust max attributes for force only. Stroke is validated dynamically.
+    // Adjust max attributes for force and stroke sliders
     document.getElementById('targetForceSlider').max = limit.maxForce;
+    document.getElementById('fastStrokeSlider').max = limit.maxStroke;
+    document.getElementById('searchStrokeSlider').max = limit.maxStroke;
+    document.getElementById('detectStrokeSlider').max = limit.maxStroke;
+    document.getElementById('pressStrokeSlider').max = limit.maxStroke;
     
     // Validate current values
     let force = parseFloat(document.getElementById('targetForce').value);
