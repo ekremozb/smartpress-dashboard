@@ -6,7 +6,7 @@ let referenceDataMap = {};
 
 const limits = {
     'SP-EM12-15': { maxStroke: 300, maxForce: 15 },
-    'SP-EM25-30 Twin': { maxStroke: 300, maxForce: 30 },
+    'SP-EM25-30 Twin': { maxStroke: 500, maxForce: 30 },
     'SP-EH30-35': { maxStroke: 500, maxForce: 35 },
     'SP-EH45-55': { maxStroke: 500, maxForce: 55 },
     'SP-EH65-80': { maxStroke: 500, maxForce: 80 },
@@ -61,12 +61,10 @@ function updateTotalStrokeOptions() {
     optStd.text = `Standart Maks. Strok (${limit.maxStroke} mm)`;
     strokeSelect.appendChild(optStd);
     
-    if (series === 'SP-EH') {
-        const optOpt = document.createElement('option');
-        optOpt.value = 750;
-        optOpt.text = `Opsiyonel Maks. Strok (750 mm)`;
-        strokeSelect.appendChild(optOpt);
-    }
+    const optOpt = document.createElement('option');
+    optOpt.value = 750;
+    optOpt.text = `Opsiyonel Maks. Strok (750 mm)`;
+    strokeSelect.appendChild(optOpt);
     
     // Restore if valid
     if (currentVal && Array.from(strokeSelect.options).some(o => o.value === currentVal)) {
