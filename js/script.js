@@ -277,6 +277,28 @@ function calcPhase(stroke, target_v, start_v, t_acc_phase, t_dec_phase, is_forwa
     };
 }
 
+function resetToDefaults() {
+    document.getElementById('targetForce').value = 30;
+    document.getElementById('targetForceSlider').value = 30;
+    document.getElementById('searchStroke').value = 30;
+    document.getElementById('searchStrokeSlider').value = 30;
+    document.getElementById('detectStroke').value = 10;
+    document.getElementById('detectStrokeSlider').value = 10;
+    document.getElementById('pressStroke').value = 50;
+    document.getElementById('pressStrokeSlider').value = 50;
+    document.getElementById('rpm').value = 1500;
+    document.getElementById('rpmSlider').value = 1500;
+    
+    // UI Label textini de guncelle
+    document.getElementById('valForce').innerText = '30 kN';
+    document.getElementById('valSearch').innerText = '30 mm';
+    document.getElementById('valDetect').innerText = '10 mm';
+    document.getElementById('valPress').innerText = '50 mm';
+    document.getElementById('valRPM').innerText = '1500 RPM';
+    
+    syncLimits();
+}
+
 function runSimulation() {
     let rpm = parseFloat(document.getElementById('rpm').value);
     
