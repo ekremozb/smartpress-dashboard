@@ -307,7 +307,7 @@ function runSimulation() {
     let total_vel = [];
     let total_pos = [];
     let shapes = [];
-    let annotations = [];
+    let legend_traces = [];
     
     let global_t = 0.0;
     let current_v = 0.0;
@@ -351,15 +351,14 @@ function runSimulation() {
             layer: 'below'
         });
         
-        annotations.push({
-            x: (start_t + global_t) / 2,
-            y: 1.05,
-            xref: 'x',
-            yref: 'paper',
-            text: phase.name,
-            showarrow: false,
-            font: { color: 'white', size: 10 },
-            textangle: 0
+        legend_traces.push({
+            x: [null],
+            y: [null],
+            name: phase.name,
+            type: 'scatter',
+            mode: 'lines',
+            line: {color: phase.color.replace('0.3', '0.8'), width: 10},
+            hoverinfo: 'none'
         });
     }
     
@@ -382,7 +381,7 @@ function runSimulation() {
         line: {color: 'white', width: 2}
     };
     
-    let traces = [trace1, trace2];
+    let traces = [trace1, trace2, ...legend_traces];
     
     let modelKey = formatModelName(document.getElementById('modelSelect').value);
     let refData = referenceDataMap[modelKey];
@@ -431,8 +430,7 @@ function runSimulation() {
             gridcolor: 'transparent'
         },
         legend: { font: {color: 'white'}, orientation: 'h', y: -0.2 },
-        shapes: shapes,
-        annotations: annotations
+        shapes: shapes
     };
     
     Plotly.newPlot('chartDiv', traces, layout, {responsive: true});
