@@ -302,11 +302,36 @@ function resetToDefaults() {
 function runSimulation() {
     let rpm = parseFloat(document.getElementById('rpm').value);
     
-    // EM process limits logic
+    // Process limits logic
     let series = document.getElementById('seriesSelect').value;
+    let model = document.getElementById('modelSelect').value;
     let maxProcessRpm = series === 'SP-EM' ? Math.min(rpm, 4000) : rpm;
     
     let v_fast = (rpm / 60.0) * 10; 
+    let v_return = -v_fast;
+    let fast_t_dec = 0.0;
+    
+    if (series === 'SP-EH') {
+        fast_t_dec = 0.25;
+        let baseRpm = 2800.0;
+        if (model.includes('30/35')) {
+            v_fast = (rpm / baseRpm) * 183.4;
+            v_return = - (rpm / baseRpm) * 197.4;
+        } else if (model.includes('45/55')) {
+            v_fast = (rpm / baseRpm) * 117.4;
+            v_return = - (rpm / baseRpm) * 122.3;
+        } else if (model.includes('65/80')) {
+            v_fast = (rpm / baseRpm) * 101.5;
+            v_return = - (rpm / baseRpm) * 97.5;
+        } else if (model.includes('100/125')) {
+            v_fast = (rpm / baseRpm) * 65.0;
+            v_return = - (rpm / baseRpm) * 62.4;
+        } else {
+            v_fast = (rpm / baseRpm) * 150.0;
+            v_return = - (rpm / baseRpm) * 150.0;
+        }
+    }
+    
     let v_search = (maxProcessRpm / 60.0) * 2; 
     let v_detect = 10.0; // fixed low speed
     let v_press = 5.0; // fixed low speed
@@ -317,12 +342,12 @@ function runSimulation() {
     let pressStroke = parseFloat(document.getElementById('pressStroke').value) || 0;
     
     let phases = [
-        { name: 'Hızlı Yaklaşma', stroke: fastStroke, v: v_fast, t_acc: 0.25, t_dec: 0.0, color: 'rgba(33, 150, 243, 0.3)' },
+        { name: 'Hızlı Yaklaşma', stroke: fastStroke, v: v_fast, t_acc: 0.25, t_dec: fast_t_dec, color: 'rgba(33, 150, 243, 0.3)' },
         { name: 'Temas Arama', stroke: searchStroke, v: v_search, t_acc: 0.25, t_dec: 0.0, color: 'rgba(255, 152, 0, 0.3)' },
         { name: 'Temas Algılama', stroke: detectStroke, v: v_detect, t_acc: 0.0, t_dec: 0.0, color: 'rgba(255, 193, 7, 0.3)' },
         { name: 'Kontrollü Presleme', stroke: pressStroke, v: v_press, t_acc: 0.0, t_dec: 0.0, color: 'rgba(244, 67, 54, 0.3)' },
         { name: 'Bekleme (1.0s)', stroke: 0, v: 0, t_acc: 0, t_dec: 0, color: 'rgba(156, 39, 176, 0.3)', is_wait: true, duration: 1.0 },
-        { name: 'Kontrollü Geri Çekilme', stroke: (fastStroke+searchStroke+detectStroke+pressStroke), v: -v_fast, t_acc: 0.25, t_dec: 0.25, color: 'rgba(76, 175, 80, 0.3)', is_forward: false }
+        { name: 'Kontrollü Geri Çekilme', stroke: (fastStroke+searchStroke+detectStroke+pressStroke), v: v_return, t_acc: 0.25, t_dec: 0.25, color: 'rgba(76, 175, 80, 0.3)', is_forward: false }
     ];
     
     let total_time = [];
