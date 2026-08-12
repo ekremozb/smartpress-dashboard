@@ -2,6 +2,8 @@
 const dt = 0.001;
 const t_acc = 0.25;
 
+let referenceDataMap = {};
+
 const limits = {
     'SP-EM12-15': { maxStroke: 300, maxForce: 15 },
     'SP-EM25-30 Twin': { maxStroke: 300, maxForce: 30 },
@@ -368,7 +370,7 @@ function runSimulation() {
     let trace1 = {
         x: total_time,
         y: total_vel,
-        name: 'Hız (mm/s)',
+        name: 'Hız (Hesaplanan)',
         type: 'scatter',
         line: {color: '#ff4d4d', width: 2, dash: 'dash'}
     };
@@ -376,16 +378,47 @@ function runSimulation() {
     let trace2 = {
         x: total_time,
         y: total_pos,
-        name: 'Pozisyon (mm)',
+        name: 'Pozisyon (Hesaplanan)',
         type: 'scatter',
         yaxis: 'y2',
         line: {color: 'white', width: 2}
     };
     
+    let traces = [trace1, trace2];
+    
+    let modelKey = formatModelName(document.getElementById('modelSelect').value);
+    let refData = referenceDataMap[modelKey];
+    
+    if (refData) {
+        let ref_time = refData.map(d => d.time);
+        let ref_vel = refData.map(d => d.speed);
+        let ref_pos = refData.map(d => d.position);
+
+        let trace3 = {
+            x: ref_time,
+            y: ref_vel,
+            name: 'Hız (Referans)',
+            type: 'scatter',
+            line: {color: 'rgba(255, 77, 77, 0.4)', width: 2, dash: 'dot'}
+        };
+        
+        let trace4 = {
+            x: ref_time,
+            y: ref_pos,
+            name: 'Pozisyon (Referans)',
+            type: 'scatter',
+            yaxis: 'y2',
+            line: {color: 'rgba(255, 255, 255, 0.4)', width: 2, dash: 'dot'}
+        };
+        traces.push(trace3);
+        traces.push(trace4);
+    }
+    
     let layout = {
         paper_bgcolor: '#0d1117',
         plot_bgcolor: '#0d1117',
         margin: {l: 60, r: 60, t: 40, b: 40},
+        hovermode: 'x unified',
         xaxis: { title: 'Zaman (s)', color: 'white', gridcolor: '#30363d' },
         yaxis: { 
             title: 'Hız (mm/s)', 
@@ -404,10 +437,19 @@ function runSimulation() {
         annotations: annotations
     };
     
-    Plotly.newPlot('chartDiv', [trace1, trace2], layout, {responsive: true});
+    Plotly.newPlot('chartDiv', traces, layout, {responsive: true});
 }
 
 // Initial Run
-window.onload = function() {
+window.onload = async function() {
+    try {
+        let res = await fetch('data/motion_data.json');
+        let rawData = await res.json();
+        rawData.forEach(item => {
+            referenceDataMap[item.model] = item.data;
+        });
+    } catch (e) {
+        console.warn("Reference data could not be loaded:", e);
+    }
     updateSubModels();
 };

@@ -1,0 +1,536 @@
+[
+  {
+    "model": "SP-EM12/15",
+    "data": [
+      {
+        "time": 0,
+        "speed": 0,
+        "position": 0,
+        "phase": "Başlangıç"
+      },
+      {
+        "time": 0,
+        "speed": 130.95238095238093,
+        "position": 0,
+        "phase": "Hızlı yaklaşma"
+      },
+      {
+        "time": 2.2909,
+        "speed": 130.95238095238093,
+        "position": 300.0,
+        "phase": "Hızlı yaklaşma"
+      },
+      {
+        "time": 2.2909,
+        "speed": 95.23809523809524,
+        "position": 300.0,
+        "phase": "Temas arama"
+      },
+      {
+        "time": 2.8159,
+        "speed": 95.23809523809524,
+        "position": 350.0,
+        "phase": "Temas arama"
+      },
+      {
+        "time": 2.8159,
+        "speed": 95.23809523809524,
+        "position": 350.0,
+        "phase": "Temas algılama"
+      },
+      {
+        "time": 3.3409,
+        "speed": 95.23809523809524,
+        "position": 400.0,
+        "phase": "Temas algılama"
+      },
+      {
+        "time": 3.3409,
+        "speed": 95.23809523809524,
+        "position": 400.0,
+        "phase": "Kuvvet/pozisyon kontrollü presleme"
+      },
+      {
+        "time": 4.3909,
+        "speed": 95.23809523809524,
+        "position": 500.0,
+        "phase": "Kuvvet/pozisyon kontrollü presleme"
+      },
+      {
+        "time": 4.3909,
+        "speed": 0.0,
+        "position": 500.0,
+        "phase": "Belirli kuvvette bekleme"
+      },
+      {
+        "time": 5.3909,
+        "speed": 0.0,
+        "position": 500.0,
+        "phase": "Belirli kuvvette bekleme"
+      },
+      {
+        "time": 5.3909,
+        "speed": 130.95238095238093,
+        "position": 500.0,
+        "phase": "Kontrollü geri çekilme"
+      },
+      {
+        "time": 9.2091,
+        "speed": 130.95238095238093,
+        "position": 0,
+        "phase": "Kontrollü geri çekilme"
+      },
+      {
+        "time": 9.2091,
+        "speed": 0,
+        "position": 0,
+        "phase": "Bitiş"
+      }
+    ]
+  },
+  {
+    "model": "SP-EM25/30 Twin",
+    "data": [
+      {
+        "time": 0,
+        "speed": 0,
+        "position": 0,
+        "phase": "Başlangıç"
+      },
+      {
+        "time": 0,
+        "speed": 130.95238095238093,
+        "position": 0,
+        "phase": "Hızlı yaklaşma"
+      },
+      {
+        "time": 2.2909,
+        "speed": 130.95238095238093,
+        "position": 300.0,
+        "phase": "Hızlı yaklaşma"
+      },
+      {
+        "time": 2.2909,
+        "speed": 95.23809523809524,
+        "position": 300.0,
+        "phase": "Temas arama"
+      },
+      {
+        "time": 2.8159,
+        "speed": 95.23809523809524,
+        "position": 350.0,
+        "phase": "Temas arama"
+      },
+      {
+        "time": 2.8159,
+        "speed": 95.23809523809524,
+        "position": 350.0,
+        "phase": "Temas algılama"
+      },
+      {
+        "time": 3.3409,
+        "speed": 95.23809523809524,
+        "position": 400.0,
+        "phase": "Temas algılama"
+      },
+      {
+        "time": 3.3409,
+        "speed": 95.23809523809524,
+        "position": 400.0,
+        "phase": "Kuvvet/pozisyon kontrollü presleme"
+      },
+      {
+        "time": 4.3909,
+        "speed": 95.23809523809524,
+        "position": 500.0,
+        "phase": "Kuvvet/pozisyon kontrollü presleme"
+      },
+      {
+        "time": 4.3909,
+        "speed": 0.0,
+        "position": 500.0,
+        "phase": "Belirli kuvvette bekleme"
+      },
+      {
+        "time": 5.3909,
+        "speed": 0.0,
+        "position": 500.0,
+        "phase": "Belirli kuvvette bekleme"
+      },
+      {
+        "time": 5.3909,
+        "speed": 130.95238095238093,
+        "position": 500.0,
+        "phase": "Kontrollü geri çekilme"
+      },
+      {
+        "time": 9.2091,
+        "speed": 130.95238095238093,
+        "position": 0,
+        "phase": "Kontrollü geri çekilme"
+      },
+      {
+        "time": 9.2091,
+        "speed": 0,
+        "position": 0,
+        "phase": "Bitiş"
+      }
+    ]
+  },
+  {
+    "model": "SP-EH30/35",
+    "data": [
+      {
+        "time": 0,
+        "speed": 0,
+        "position": 0,
+        "phase": "Başlangıç"
+      },
+      {
+        "time": 0,
+        "speed": 196.48758406406833,
+        "position": 0,
+        "phase": "Hızlı yaklaşma"
+      },
+      {
+        "time": 1.5268,
+        "speed": 196.48758406406833,
+        "position": 300.0,
+        "phase": "Hızlı yaklaşma"
+      },
+      {
+        "time": 1.5268,
+        "speed": 50.929581789406505,
+        "position": 300.0,
+        "phase": "Temas arama"
+      },
+      {
+        "time": 2.5086,
+        "speed": 50.929581789406505,
+        "position": 350.0,
+        "phase": "Temas arama"
+      },
+      {
+        "time": 2.5086,
+        "speed": 25.464790894703253,
+        "position": 350.0,
+        "phase": "Temas algılama"
+      },
+      {
+        "time": 4.4721,
+        "speed": 25.464790894703253,
+        "position": 400.0,
+        "phase": "Temas algılama"
+      },
+      {
+        "time": 4.4721,
+        "speed": 16.976527263135505,
+        "position": 400.0,
+        "phase": "Kuvvet/pozisyon kontrollü presleme"
+      },
+      {
+        "time": 10.3625,
+        "speed": 16.976527263135505,
+        "position": 500.0,
+        "phase": "Kuvvet/pozisyon kontrollü presleme"
+      },
+      {
+        "time": 10.3625,
+        "speed": 0.0,
+        "position": 500.0,
+        "phase": "Belirli kuvvette bekleme"
+      },
+      {
+        "time": 11.3625,
+        "speed": 0.0,
+        "position": 500.0,
+        "phase": "Belirli kuvvette bekleme"
+      },
+      {
+        "time": 11.3625,
+        "speed": 196.48758406406833,
+        "position": 500.0,
+        "phase": "Kontrollü geri çekilme"
+      },
+      {
+        "time": 13.9072,
+        "speed": 196.48758406406833,
+        "position": 0,
+        "phase": "Kontrollü geri çekilme"
+      },
+      {
+        "time": 13.9072,
+        "speed": 0,
+        "position": 0,
+        "phase": "Bitiş"
+      }
+    ]
+  },
+  {
+    "model": "SP-EH45/55",
+    "data": [
+      {
+        "time": 0,
+        "speed": 0,
+        "position": 0,
+        "phase": "Başlangıç"
+      },
+      {
+        "time": 0,
+        "speed": 125.75205380100374,
+        "position": 0,
+        "phase": "Hızlı yaklaşma"
+      },
+      {
+        "time": 2.3856,
+        "speed": 125.75205380100374,
+        "position": 300.0,
+        "phase": "Hızlı yaklaşma"
+      },
+      {
+        "time": 2.3856,
+        "speed": 32.07960556148054,
+        "position": 300.0,
+        "phase": "Temas arama"
+      },
+      {
+        "time": 3.9443,
+        "speed": 32.07960556148054,
+        "position": 350.0,
+        "phase": "Temas arama"
+      },
+      {
+        "time": 3.9443,
+        "speed": 16.03980278074027,
+        "position": 350.0,
+        "phase": "Temas algılama"
+      },
+      {
+        "time": 7.0615,
+        "speed": 16.03980278074027,
+        "position": 400.0,
+        "phase": "Temas algılama"
+      },
+      {
+        "time": 7.0615,
+        "speed": 10.693201853826848,
+        "position": 400.0,
+        "phase": "Kuvvet/pozisyon kontrollü presleme"
+      },
+      {
+        "time": 16.4133,
+        "speed": 10.693201853826848,
+        "position": 500.0,
+        "phase": "Kuvvet/pozisyon kontrollü presleme"
+      },
+      {
+        "time": 16.4133,
+        "speed": 0.0,
+        "position": 500.0,
+        "phase": "Belirli kuvvette bekleme"
+      },
+      {
+        "time": 17.4133,
+        "speed": 0.0,
+        "position": 500.0,
+        "phase": "Belirli kuvvette bekleme"
+      },
+      {
+        "time": 17.4133,
+        "speed": 125.75205380100374,
+        "position": 500.0,
+        "phase": "Kontrollü geri çekilme"
+      },
+      {
+        "time": 21.3893,
+        "speed": 125.75205380100374,
+        "position": 0,
+        "phase": "Kontrollü geri çekilme"
+      },
+      {
+        "time": 21.3893,
+        "speed": 0,
+        "position": 0,
+        "phase": "Bitiş"
+      }
+    ]
+  },
+  {
+    "model": "SP-EH65/80",
+    "data": [
+      {
+        "time": 0,
+        "speed": 0,
+        "position": 0,
+        "phase": "Başlangıç"
+      },
+      {
+        "time": 0,
+        "speed": 113.68210220849669,
+        "position": 0,
+        "phase": "Hızlı yaklaşma"
+      },
+      {
+        "time": 2.6389,
+        "speed": 113.68210220849669,
+        "position": 300.0,
+        "phase": "Hızlı yaklaşma"
+      },
+      {
+        "time": 2.6389,
+        "speed": 27.852115041081685,
+        "position": 300.0,
+        "phase": "Temas arama"
+      },
+      {
+        "time": 4.4341,
+        "speed": 27.852115041081685,
+        "position": 350.0,
+        "phase": "Temas arama"
+      },
+      {
+        "time": 4.4341,
+        "speed": 13.926057520540843,
+        "position": 350.0,
+        "phase": "Temas algılama"
+      },
+      {
+        "time": 8.0245,
+        "speed": 13.926057520540843,
+        "position": 400.0,
+        "phase": "Temas algılama"
+      },
+      {
+        "time": 8.0245,
+        "speed": 9.284038347027227,
+        "position": 400.0,
+        "phase": "Kuvvet/pozisyon kontrollü presleme"
+      },
+      {
+        "time": 18.7957,
+        "speed": 9.284038347027227,
+        "position": 500.0,
+        "phase": "Kuvvet/pozisyon kontrollü presleme"
+      },
+      {
+        "time": 18.7957,
+        "speed": 0.0,
+        "position": 500.0,
+        "phase": "Belirli kuvvette bekleme"
+      },
+      {
+        "time": 19.7957,
+        "speed": 0.0,
+        "position": 500.0,
+        "phase": "Belirli kuvvette bekleme"
+      },
+      {
+        "time": 19.7957,
+        "speed": 98.0,
+        "position": 500.0,
+        "phase": "Kontrollü geri çekilme"
+      },
+      {
+        "time": 24.8977,
+        "speed": 98.0,
+        "position": 0,
+        "phase": "Kontrollü geri çekilme"
+      },
+      {
+        "time": 24.8977,
+        "speed": 0,
+        "position": 0,
+        "phase": "Bitiş"
+      }
+    ]
+  },
+  {
+    "model": "SP-EH100/125",
+    "data": [
+      {
+        "time": 0,
+        "speed": 0,
+        "position": 0,
+        "phase": "Başlangıç"
+      },
+      {
+        "time": 0,
+        "speed": 72.75654541343788,
+        "position": 0,
+        "phase": "Hızlı yaklaşma"
+      },
+      {
+        "time": 4.1233,
+        "speed": 72.75654541343788,
+        "position": 300.0,
+        "phase": "Hızlı yaklaşma"
+      },
+      {
+        "time": 4.1233,
+        "speed": 17.825353626292276,
+        "position": 300.0,
+        "phase": "Temas arama"
+      },
+      {
+        "time": 6.9283,
+        "speed": 17.825353626292276,
+        "position": 350.0,
+        "phase": "Temas arama"
+      },
+      {
+        "time": 6.9283,
+        "speed": 8.912676813146138,
+        "position": 350.0,
+        "phase": "Temas algılama"
+      },
+      {
+        "time": 12.5383,
+        "speed": 8.912676813146138,
+        "position": 400.0,
+        "phase": "Temas algılama"
+      },
+      {
+        "time": 12.5383,
+        "speed": 5.941784542097426,
+        "position": 400.0,
+        "phase": "Kuvvet/pozisyon kontrollü presleme"
+      },
+      {
+        "time": 29.3683,
+        "speed": 5.941784542097426,
+        "position": 500.0,
+        "phase": "Kuvvet/pozisyon kontrollü presleme"
+      },
+      {
+        "time": 29.3683,
+        "speed": 0.0,
+        "position": 500.0,
+        "phase": "Belirli kuvvette bekleme"
+      },
+      {
+        "time": 30.3683,
+        "speed": 0.0,
+        "position": 500.0,
+        "phase": "Belirli kuvvette bekleme"
+      },
+      {
+        "time": 30.3683,
+        "speed": 62.0,
+        "position": 500.0,
+        "phase": "Kontrollü geri çekilme"
+      },
+      {
+        "time": 38.4328,
+        "speed": 62.0,
+        "position": 0,
+        "phase": "Kontrollü geri çekilme"
+      },
+      {
+        "time": 38.4328,
+        "speed": 0,
+        "position": 0,
+        "phase": "Bitiş"
+      }
+    ]
+  }
+]
