@@ -30,11 +30,17 @@
             <h2 data-i18n="form_title_app">Mekanik Limitler ve Modeller</h2>
             
             <div class="form-group">
+                <label for="seriesSelect">SmartPress Serisi</label>
+                <select id="seriesSelect" class="form-control" onchange="updateSubModels()">
+                    <option value="SP-EH" selected>SP-EH Serisi (Max 500mm Strok)</option>
+                    <option value="SP-EM">SP-EM Serisi (Max 300mm Strok)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
                 <label for="modelSelect">SmartPress Modeli</label>
                 <select id="modelSelect" class="form-control" onchange="syncLimits()">
-                    <option value="SP-EM12-15">SP-EM12/15 (Max 300mm Strok)</option>
-                    <option value="SP-EH30-35" selected>SP-EH30/35 (Max 500mm Strok)</option>
-                    <option value="SP-EH65-80">SP-EH65/80 (Max 500mm Strok)</option>
+                    <!-- Options populated by JS -->
                 </select>
             </div>
 

@@ -4,51 +4,133 @@ const t_acc = 0.25;
 
 const limits = {
     'SP-EM12-15': { maxStroke: 300, maxForce: 15 },
+    'SP-EM25-30 Twin': { maxStroke: 300, maxForce: 30 },
     'SP-EH30-35': { maxStroke: 500, maxForce: 35 },
-    'SP-EH65-80': { maxStroke: 500, maxForce: 80 }
+    'SP-EH45-55': { maxStroke: 500, maxForce: 55 },
+    'SP-EH65-80': { maxStroke: 500, maxForce: 80 },
+    'SP-EH100-125': { maxStroke: 500, maxForce: 125 }
 };
+
+const seriesModels = {
+    'SP-EM': ['SP-EM12-15', 'SP-EM25-30 Twin'],
+    'SP-EH': ['SP-EH30-35', 'SP-EH45-55', 'SP-EH65-80', 'SP-EH100-125']
+};
+
+function formatModelName(model) {
+    if (model === 'SP-EM12-15') return 'SP-EM12/15';
+    if (model === 'SP-EM25-30 Twin') return 'SP-EM25/30 Twin';
+    if (model === 'SP-EH30-35') return 'SP-EH30/35';
+    if (model === 'SP-EH45-55') return 'SP-EH45/55';
+    if (model === 'SP-EH65-80') return 'SP-EH65/80';
+    if (model === 'SP-EH100-125') return 'SP-EH100/125';
+    return model;
+}
+
+function updateSubModels() {
+    const series = document.getElementById('seriesSelect').value;
+    const modelSelect = document.getElementById('modelSelect');
+    modelSelect.innerHTML = '';
+    
+    seriesModels[series].forEach(model => {
+        const option = document.createElement('option');
+        option.value = model;
+        option.text = formatModelName(model);
+        modelSelect.appendChild(option);
+    });
+    
+    syncLimits();
+}
 
 function syncLimits() {
     const model = document.getElementById('modelSelect').value;
+    if (!model || !limits[model]) return;
     const limit = limits[model];
     
-    // Adjust sliders
-    document.getElementById('fastStrokeSlider').max = limit.maxStroke;
+    // Adjust max attributes for force only. Stroke is validated dynamically.
     document.getElementById('targetForceSlider').max = limit.maxForce;
     
     // Validate current values
-    let fastStr = parseFloat(document.getElementById('fastStroke').value);
     let force = parseFloat(document.getElementById('targetForce').value);
     
-    if (fastStr > limit.maxStroke) {
-        document.getElementById('fastStroke').value = limit.maxStroke;
-        document.getElementById('fastStrokeSlider').value = limit.maxStroke;
-        document.getElementById('valFast').innerText = limit.maxStroke + ' mm';
-    }
     if (force > limit.maxForce) {
         document.getElementById('targetForce').value = limit.maxForce;
         document.getElementById('targetForceSlider').value = limit.maxForce;
         document.getElementById('valForce').innerText = limit.maxForce + ' kN';
     }
+    
+    let fastStr = parseFloat(document.getElementById('fastStroke').value) || 0;
+    let searchStr = parseFloat(document.getElementById('searchStroke').value) || 0;
+    let detectStr = parseFloat(document.getElementById('detectStroke').value) || 0;
+    let pressStr = parseFloat(document.getElementById('pressStroke').value) || 0;
+    
+    let total = fastStr + searchStr + detectStr + pressStr;
+    if (total > limit.maxStroke) {
+        // Reset to safe defaults if model limit is exceeded
+        document.getElementById('fastStroke').value = limit.maxStroke * 0.5;
+        document.getElementById('fastStrokeSlider').value = limit.maxStroke * 0.5;
+        document.getElementById('valFast').innerText = (limit.maxStroke * 0.5) + ' mm';
+        
+        document.getElementById('searchStroke').value = 0;
+        document.getElementById('searchStrokeSlider').value = 0;
+        document.getElementById('valSearch').innerText = '0 mm';
+        
+        document.getElementById('detectStroke').value = 0;
+        document.getElementById('detectStrokeSlider').value = 0;
+        document.getElementById('valDetect').innerText = '0 mm';
+        
+        document.getElementById('pressStroke').value = 0;
+        document.getElementById('pressStrokeSlider').value = 0;
+        document.getElementById('valPress').innerText = '0 mm';
+    }
     runSimulation();
 }
 
 function syncInputs(sourceId, value) {
+    const limit = limits[document.getElementById('modelSelect').value];
+    let val = parseFloat(value) || 0;
+
+    // First apply raw value
     if (sourceId.includes('Slider')) {
         let inputId = sourceId.replace('Slider', '');
-        document.getElementById(inputId).value = value;
+        document.getElementById(inputId).value = val;
     } else {
         let sliderId = sourceId + 'Slider';
-        document.getElementById(sliderId).value = value;
+        document.getElementById(sliderId).value = val;
     }
     
+    // Validate stroke total if a stroke field is changed
+    if (sourceId.includes('Stroke')) {
+        let fastStr = parseFloat(document.getElementById('fastStroke').value) || 0;
+        let searchStr = parseFloat(document.getElementById('searchStroke').value) || 0;
+        let detectStr = parseFloat(document.getElementById('detectStroke').value) || 0;
+        let pressStr = parseFloat(document.getElementById('pressStroke').value) || 0;
+        
+        let total = fastStr + searchStr + detectStr + pressStr;
+        if (total > limit.maxStroke) {
+            let excess = total - limit.maxStroke;
+            val = val - excess;
+            if (val < 0) val = 0;
+            
+            // Re-apply capped value
+            if (sourceId.includes('Slider')) {
+                let inputId = sourceId.replace('Slider', '');
+                document.getElementById(inputId).value = val;
+                document.getElementById(sourceId).value = val;
+            } else {
+                let sliderId = sourceId + 'Slider';
+                document.getElementById(sourceId).value = val;
+                document.getElementById(sliderId).value = val;
+            }
+        }
+    }
+
     let unit = " mm";
     if (sourceId.includes('Force')) unit = " kN";
     if (sourceId.includes('rpm')) unit = " RPM";
     
     let valDisplayId = "val" + sourceId.replace('Slider', '').charAt(0).toUpperCase() + sourceId.replace('Slider', '').slice(1).replace('Stroke', '');
     let displayEl = document.getElementById(valDisplayId);
-    if(displayEl) displayEl.innerText = value + unit;
+    if(displayEl) displayEl.innerText = val + unit;
 
     runSimulation();
 }
@@ -251,5 +333,5 @@ function runSimulation() {
 
 // Initial Run
 window.onload = function() {
-    syncLimits();
+    updateSubModels();
 };
