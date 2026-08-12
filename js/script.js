@@ -81,7 +81,7 @@ function syncLimits() {
     const limit = limits[model];
     
     // Determine RPM max
-    let maxRpm = series === 'SP-EH' ? 3000 : 5500;
+    let maxRpm = series === 'SP-EH' ? 2800 : 5500;
     document.getElementById('rpmSlider').max = maxRpm;
     document.getElementById('rpm').max = maxRpm;
     
