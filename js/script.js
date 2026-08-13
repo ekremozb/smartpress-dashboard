@@ -416,7 +416,7 @@ function runSimulation() {
         y: total_vel,
         name: 'Hız (Hesaplanan)',
         type: 'scatter',
-        line: {color: '#ff4d4d', width: 2, dash: 'dash'}
+        line: {color: 'white', width: 2}
     };
     
     let trace2 = {
@@ -425,7 +425,7 @@ function runSimulation() {
         name: 'Pozisyon (Hesaplanan)',
         type: 'scatter',
         yaxis: 'y2',
-        line: {color: 'white', width: 2}
+        line: {color: '#ff4d4d', width: 2}
     };
     
     let traces = [trace1, trace2, ...legend_traces];
@@ -443,7 +443,7 @@ function runSimulation() {
             y: ref_vel,
             name: 'Hız (Referans)',
             type: 'scatter',
-            line: {color: 'rgba(255, 77, 77, 0.4)', width: 2, dash: 'dot'}
+            line: {color: 'rgba(255, 255, 255, 0.4)', width: 2, dash: 'dot'}
         };
         
         let trace4 = {
@@ -452,7 +452,7 @@ function runSimulation() {
             name: 'Pozisyon (Referans)',
             type: 'scatter',
             yaxis: 'y2',
-            line: {color: 'rgba(255, 255, 255, 0.4)', width: 2, dash: 'dot'}
+            line: {color: 'rgba(255, 77, 77, 0.4)', width: 2, dash: 'dot'}
         };
         traces.push(trace3);
         traces.push(trace4);
@@ -466,12 +466,12 @@ function runSimulation() {
         xaxis: { title: 'Zaman (s)', color: 'white', gridcolor: '#30363d' },
         yaxis: { 
             title: 'Hız (mm/s)', 
-            color: '#ff4d4d', 
+            color: 'white', 
             gridcolor: '#30363d'
         },
         yaxis2: {
             title: 'Pozisyon (mm)',
-            color: 'white',
+            color: '#ff4d4d',
             overlaying: 'y',
             side: 'right',
             gridcolor: 'transparent'
