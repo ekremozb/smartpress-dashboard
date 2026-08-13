@@ -18,6 +18,15 @@ const seriesModels = {
     'SP-EH': ['SP-EH30-35', 'SP-EH45-55', 'SP-EH65-80', 'SP-EH100-125']
 };
 
+const modelReferences = {
+    "SP-EM12/15": { baseRpm: 3000, fastStroke: 210.0, searchStroke: 30.0, detectStroke: 10.0, pressStroke: 50.0, v_fast: 130.95238095238093, v_search: 95.23809523809524, v_detect: 95.23809523809524, v_press: 95.23809523809524, v_return: -130.95238095238093 },
+    "SP-EM25/30 Twin": { baseRpm: 3000, fastStroke: 410.0, searchStroke: 30.0, detectStroke: 10.0, pressStroke: 50.0, v_fast: 130.95238095238093, v_search: 95.23809523809524, v_detect: 95.23809523809524, v_press: 95.23809523809524, v_return: -130.95238095238093 },
+    "SP-EH30/35": { baseRpm: 2800, fastStroke: 410.0, searchStroke: 30.0, detectStroke: 10.0, pressStroke: 50.0, v_fast: 183.38841179313044, v_search: 50.929581789406505, v_detect: 25.464790894703253, v_press: 16.976527263135505, v_return: -183.38841179313044 },
+    "SP-EH45/55": { baseRpm: 2800, fastStroke: 410.0, searchStroke: 30.0, detectStroke: 10.0, pressStroke: 50.0, v_fast: 117.36858354760348, v_search: 32.07960556148054, v_detect: 16.03980278074027, v_press: 10.693201853826848, v_return: -117.36858354760348 },
+    "SP-EH65/80": { baseRpm: 2800, fastStroke: 410.0, searchStroke: 30.0, detectStroke: 10.0, pressStroke: 50.0, v_fast: 106.1032953945969, v_search: 27.852115041081685, v_detect: 13.926057520540843, v_press: 9.284038347027227, v_return: -98.0 },
+    "SP-EH100/125": { baseRpm: 2800, fastStroke: 410.0, searchStroke: 30.0, detectStroke: 10.0, pressStroke: 50.0, v_fast: 67.906109052542, v_search: 17.825353626292276, v_detect: 8.912676813146138, v_press: 5.941784542097426, v_return: -62.0 }
+};
+
 function formatModelName(model) {
     if (model === 'SP-EM12-15') return 'SP-EM12/15';
     if (model === 'SP-EM25-30 Twin') return 'SP-EM25/30 Twin';
@@ -278,23 +287,30 @@ function calcPhase(stroke, target_v, start_v, t_acc_phase, t_dec_phase, is_forwa
 }
 
 function resetToDefaults() {
+    let rawModel = document.getElementById('modelSelect').value;
+    let modelName = formatModelName(rawModel);
+    let ref = modelReferences[modelName];
+    if (!ref) {
+        ref = { baseRpm: 1500, searchStroke: 30, detectStroke: 10, pressStroke: 50 }; // fallback
+    }
+
     document.getElementById('targetForce').value = 30;
     document.getElementById('targetForceSlider').value = 30;
-    document.getElementById('searchStroke').value = 30;
-    document.getElementById('searchStrokeSlider').value = 30;
-    document.getElementById('detectStroke').value = 10;
-    document.getElementById('detectStrokeSlider').value = 10;
-    document.getElementById('pressStroke').value = 50;
-    document.getElementById('pressStrokeSlider').value = 50;
-    document.getElementById('rpm').value = 1500;
-    document.getElementById('rpmSlider').value = 1500;
+    document.getElementById('searchStroke').value = ref.searchStroke;
+    document.getElementById('searchStrokeSlider').value = ref.searchStroke;
+    document.getElementById('detectStroke').value = ref.detectStroke;
+    document.getElementById('detectStrokeSlider').value = ref.detectStroke;
+    document.getElementById('pressStroke').value = ref.pressStroke;
+    document.getElementById('pressStrokeSlider').value = ref.pressStroke;
+    document.getElementById('rpm').value = ref.baseRpm;
+    document.getElementById('rpmSlider').value = ref.baseRpm;
     
     // UI Label textini de guncelle
     document.getElementById('valForce').innerText = '30 kN';
-    document.getElementById('valSearch').innerText = '30 mm';
-    document.getElementById('valDetect').innerText = '10 mm';
-    document.getElementById('valPress').innerText = '50 mm';
-    document.getElementById('valRPM').innerText = '1500 RPM';
+    document.getElementById('valSearch').innerText = ref.searchStroke + ' mm';
+    document.getElementById('valDetect').innerText = ref.detectStroke + ' mm';
+    document.getElementById('valPress').innerText = ref.pressStroke + ' mm';
+    document.getElementById('valRPM').innerText = ref.baseRpm + ' RPM';
     
     syncLimits();
 }
@@ -304,37 +320,30 @@ function runSimulation() {
     
     // Process limits logic
     let series = document.getElementById('seriesSelect').value;
-    let model = document.getElementById('modelSelect').value;
-    let maxProcessRpm = series === 'SP-EM' ? Math.min(rpm, 4000) : rpm;
+    let rawModel = document.getElementById('modelSelect').value;
+    let modelName = formatModelName(rawModel);
     
-    let v_fast = (rpm / 60.0) * 10; 
-    let v_return = -v_fast;
-    let fast_t_dec = 0.0;
+    let ref = modelReferences[modelName];
     
-    if (series === 'SP-EH') {
-        fast_t_dec = 0.25;
-        let baseRpm = 2800.0;
-        if (model.includes('30/35')) {
-            v_fast = (rpm / baseRpm) * 183.4;
-            v_return = - (rpm / baseRpm) * 197.4;
-        } else if (model.includes('45/55')) {
-            v_fast = (rpm / baseRpm) * 117.4;
-            v_return = - (rpm / baseRpm) * 122.3;
-        } else if (model.includes('65/80')) {
-            v_fast = (rpm / baseRpm) * 101.5;
-            v_return = - (rpm / baseRpm) * 97.5;
-        } else if (model.includes('100/125')) {
-            v_fast = (rpm / baseRpm) * 65.0;
-            v_return = - (rpm / baseRpm) * 62.4;
-        } else {
-            v_fast = (rpm / baseRpm) * 150.0;
-            v_return = - (rpm / baseRpm) * 150.0;
-        }
+    let v_fast = 0, v_search = 0, v_detect = 0, v_press = 0, v_return = 0;
+    let fast_t_dec = series === 'SP-EH' ? 0.25 : 0.0;
+
+    if (ref) {
+        let scale = rpm / ref.baseRpm;
+        v_fast = ref.v_fast * scale;
+        v_search = ref.v_search * scale;
+        v_detect = ref.v_detect * scale;
+        v_press = ref.v_press * scale;
+        v_return = ref.v_return * scale;
+    } else {
+        // Fallback for unknown models
+        let maxProcessRpm = series === 'SP-EM' ? Math.min(rpm, 4000) : rpm;
+        v_fast = (rpm / 60.0) * 10;
+        v_return = -v_fast;
+        v_search = (maxProcessRpm / 60.0) * 2;
+        v_detect = 10.0;
+        v_press = 5.0;
     }
-    
-    let v_search = (maxProcessRpm / 60.0) * 2; 
-    let v_detect = 10.0; // fixed low speed
-    let v_press = 5.0; // fixed low speed
     
     let fastStroke = parseFloat(document.getElementById('fastStroke').value) || 0;
     let searchStroke = parseFloat(document.getElementById('searchStroke').value) || 0;
