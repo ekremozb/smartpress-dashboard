@@ -326,7 +326,7 @@ function runSimulation() {
     let ref = modelReferences[modelName];
     
     let v_fast = 0, v_search = 0, v_detect = 0, v_press = 0, v_return = 0;
-    let fast_t_dec = series === 'SP-EH' ? 0.25 : 0.0;
+    let fast_t_dec = 0.0; // Fixed: do not decelerate to zero between phases
 
     if (ref) {
         let scale = rpm / ref.baseRpm;
