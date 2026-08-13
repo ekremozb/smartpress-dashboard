@@ -19,12 +19,12 @@ const seriesModels = {
 };
 
 const modelReferences = {
-    "SP-EM12/15": { baseRpm: 3000, fastStroke: 210.0, searchStroke: 30.0, detectStroke: 10.0, pressStroke: 50.0, v_fast: 130.95238095238093, v_search: 95.23809523809524, v_detect: 95.23809523809524, v_press: 95.23809523809524, v_return: -130.95238095238093 },
-    "SP-EM25/30 Twin": { baseRpm: 3000, fastStroke: 410.0, searchStroke: 30.0, detectStroke: 10.0, pressStroke: 50.0, v_fast: 130.95238095238093, v_search: 95.23809523809524, v_detect: 95.23809523809524, v_press: 95.23809523809524, v_return: -130.95238095238093 },
-    "SP-EH30/35": { baseRpm: 2800, fastStroke: 410.0, searchStroke: 30.0, detectStroke: 10.0, pressStroke: 50.0, v_fast: 183.38841179313044, v_search: 50.929581789406505, v_detect: 25.464790894703253, v_press: 16.976527263135505, v_return: -183.38841179313044 },
-    "SP-EH45/55": { baseRpm: 2800, fastStroke: 410.0, searchStroke: 30.0, detectStroke: 10.0, pressStroke: 50.0, v_fast: 117.36858354760348, v_search: 32.07960556148054, v_detect: 16.03980278074027, v_press: 10.693201853826848, v_return: -117.36858354760348 },
-    "SP-EH65/80": { baseRpm: 2800, fastStroke: 410.0, searchStroke: 30.0, detectStroke: 10.0, pressStroke: 50.0, v_fast: 106.1032953945969, v_search: 27.852115041081685, v_detect: 13.926057520540843, v_press: 9.284038347027227, v_return: -98.0 },
-    "SP-EH100/125": { baseRpm: 2800, fastStroke: 410.0, searchStroke: 30.0, detectStroke: 10.0, pressStroke: 50.0, v_fast: 67.906109052542, v_search: 17.825353626292276, v_detect: 8.912676813146138, v_press: 5.941784542097426, v_return: -62.0 }
+    "SP-EM12/15": { baseRpm: 5500, fastStroke: 410.0, searchStroke: 30.0, detectStroke: 10.0, pressStroke: 50.0, v_fast: 130.95238095238093, v_search: 95.23809523809524, v_detect: 95.23809523809524, v_press: 95.23809523809524, v_return: -130.95238095238093 },
+    "SP-EM25/30 Twin": { baseRpm: 5500, fastStroke: 410.0, searchStroke: 30.0, detectStroke: 10.0, pressStroke: 50.0, v_fast: 130.95238095238093, v_search: 95.23809523809524, v_detect: 95.23809523809524, v_press: 95.23809523809524, v_return: -130.95238095238093 },
+    "SP-EH30/35": { baseRpm: 2800, fastStroke: 410.0, searchStroke: 30.0, detectStroke: 10.0, pressStroke: 50.0, v_fast: 183.38841179313044, v_search: 50.929581789406505, v_detect: 25.464790894703253, v_press: 16.976527263135505, v_return: -197.40147980390117 },
+    "SP-EH45/55": { baseRpm: 2800, fastStroke: 410.0, searchStroke: 30.0, detectStroke: 10.0, pressStroke: 50.0, v_fast: 117.36858354760346, v_search: 32.07960556148054, v_detect: 16.03980278074027, v_press: 10.693201853826848, v_return: -122.25894119542029 },
+    "SP-EH65/80": { baseRpm: 2800, fastStroke: 410.0, searchStroke: 30.0, detectStroke: 10.0, pressStroke: 50.0, v_fast: 101.50187697187204, v_search: 27.852115041081685, v_detect: 13.926057520540843, v_press: 9.284038347027227, v_return: -97.52141120826919 },
+    "SP-EH100/125": { baseRpm: 2800, fastStroke: 410.0, searchStroke: 30.0, detectStroke: 10.0, pressStroke: 50.0, v_fast: 64.9612012619981, v_search: 17.825353626292276, v_detect: 8.912676813146138, v_press: 5.941784542097426, v_return: -62.41370317329229 }
 };
 
 function formatModelName(model) {
