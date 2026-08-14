@@ -5,7 +5,7 @@ const t_acc = 0.25;
 let referenceDataMap = {};
 
 const limits = {
-    'SP-EM12-15': { maxStroke: 300, maxForce: 15 },
+    'SP-EM12-15': { maxStroke: 500, maxForce: 15 },
     'SP-EM25-30 Twin': { maxStroke: 500, maxForce: 30 },
     'SP-EH30-35': { maxStroke: 500, maxForce: 35 },
     'SP-EH45-55': { maxStroke: 500, maxForce: 55 },
