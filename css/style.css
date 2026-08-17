@@ -165,10 +165,10 @@ body {
 }
 
 .content {
-    padding: 40px;
+    padding: 20px 40px;
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 50px;
+    grid-template-columns: 1fr 2fr;
+    gap: 40px;
 }
 
 .form-section h2 {
@@ -685,6 +685,9 @@ input[type=range]::-webkit-slider-thumb:hover {
 @media (max-width: 768px) {
     body {
         padding: 10px;
+    }
+    #chartDiv {
+        min-height: 400px !important;
     }
     .form-row {
         grid-template-columns: 1fr;
