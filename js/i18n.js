@@ -1,7 +1,7 @@
 const translations = {
     tr: {
         "app_title": "SmartPress Kinematik Dashboard",
-        "app_subtitle": "İnteraktif Hareket Profili Simulasyonu",
+        "app_subtitle": "İnteraktif Hareket Profili Simülasyonu",
         "form_title_app": "Mekanik Limitler ve Modeller",
         "lbl_series": "SmartPress Serisi",
         "lbl_model": "SmartPress Modeli",
@@ -51,6 +51,7 @@ let currentLanguage = 'tr';
 
 function setLanguage(lang) {
     currentLanguage = lang;
+    document.documentElement.lang = lang;
     
     // Update active button state
     document.querySelectorAll('.lang-btn').forEach(btn => {
