@@ -15,12 +15,17 @@
 <div class="bg-orb-2"></div>
 
 <div class="container" id="mainContainer">
-    <div class="header">
+    <div class="header" style="position: relative;">
         <div class="logo-container">
             <img src="assets/hktm-logo.png" alt="HKTM Logo" style="height: 48px; object-fit: contain;">
         </div>
         <h1 data-i18n="app_title">SmartPress Kinematik Dashboard</h1>
         <p data-i18n="app_subtitle">İnteraktif Hareket Profili Simulasyonu</p>
+        
+        <div class="lang-selector">
+            <button class="lang-btn active" id="btnTr" onclick="setLanguage('tr')">TR</button>
+            <button class="lang-btn" id="btnEn" onclick="setLanguage('en')">EN</button>
+        </div>
     </div>
 
     <div class="content">
@@ -29,22 +34,22 @@
             <h2 data-i18n="form_title_app">Mekanik Limitler ve Modeller</h2>
             
             <div class="form-group">
-                <label for="seriesSelect">SmartPress Serisi</label>
+                <label for="seriesSelect" data-i18n="lbl_series">SmartPress Serisi</label>
                 <select id="seriesSelect" class="form-control" onchange="updateSubModels()">
-                    <option value="SP-EH" selected>SP-EH Serisi (Max 500mm Strok)</option>
-                    <option value="SP-EM">SP-EM Serisi (Max 500mm Strok)</option>
+                    <option value="SP-EH" selected data-i18n="opt_eh_series">SP-EH Serisi (Max 500mm Strok)</option>
+                    <option value="SP-EM" data-i18n="opt_em_series">SP-EM Serisi (Max 500mm Strok)</option>
                 </select>
             </div>
 
             <div class="form-group">
-                <label for="modelSelect">SmartPress Modeli</label>
+                <label for="modelSelect" data-i18n="lbl_model">SmartPress Modeli</label>
                 <select id="modelSelect" class="form-control" onchange="syncLimits()">
                     <!-- Options populated by JS -->
                 </select>
             </div>
 
             <div class="form-group">
-                <label for="targetForceSlider">Hedef Baskı Kuvveti <span class="val-display" id="valForce">30 kN</span></label>
+                <label for="targetForceSlider"><span data-i18n="lbl_force">Hedef Baskı Kuvveti</span> <span class="val-display" id="valForce">30 kN</span></label>
                 <div class="input-group">
                     <input type="range" id="targetForceSlider" min="1" max="100" value="30" step="1" oninput="syncInputs('targetForceSlider', this.value)">
                     <input type="number" id="targetForce" class="form-control input-number-small" value="30" min="1" oninput="syncInputs('targetForce', this.value)">
@@ -52,16 +57,16 @@
             </div>
 
             <div class="form-group">
-                <label for="totalStrokeSelect">Kullanılacak Toplam Strok</label>
+                <label for="totalStrokeSelect" data-i18n="lbl_total_stroke">Kullanılacak Toplam Strok</label>
                 <select id="totalStrokeSelect" class="form-control" onchange="syncLimits()">
                     <!-- Options populated by JS (Standard vs Optional) -->
                 </select>
             </div>
 
-            <h2 style="margin-top: 30px;">Kinematik Fazlar (dt=0.001s, a=0.25s rampa)</h2>
+            <h2 style="margin-top: 30px;" data-i18n="lbl_kinematics">Kinematik Fazlar (dt=0.001s, a=0.25s rampa)</h2>
 
             <div class="form-group">
-                <label>Hızlı Yaklaşma Stroku (Otomatik) <span class="val-display" id="valFast">100 mm</span></label>
+                <label><span data-i18n="lbl_fast_stroke">Hızlı Yaklaşma Stroku (Otomatik)</span> <span class="val-display" id="valFast">100 mm</span></label>
                 <div class="input-group" style="opacity: 0.6; pointer-events: none;">
                     <input type="range" id="fastStrokeSlider" min="0" max="500" value="100">
                     <input type="number" id="fastStroke" class="form-control input-number-small" value="100" readonly>
@@ -69,7 +74,7 @@
             </div>
 
             <div class="form-group">
-                <label for="searchStrokeSlider">Temas Arama Stroku <span class="val-display" id="valSearch">30 mm</span></label>
+                <label for="searchStrokeSlider"><span data-i18n="lbl_search_stroke">Temas Arama Stroku</span> <span class="val-display" id="valSearch">30 mm</span></label>
                 <div class="input-group">
                     <input type="range" id="searchStrokeSlider" min="0" max="100" value="30" step="10" oninput="syncInputs('searchStrokeSlider', this.value)">
                     <input type="number" id="searchStroke" class="form-control input-number-small" value="30" min="0" step="10" oninput="syncInputs('searchStroke', this.value)">
@@ -77,7 +82,7 @@
             </div>
             
             <div class="form-group">
-                <label for="detectStrokeSlider">Temas Algılama Stroku <span class="val-display" id="valDetect">10 mm</span></label>
+                <label for="detectStrokeSlider"><span data-i18n="lbl_detect_stroke">Temas Algılama Stroku</span> <span class="val-display" id="valDetect">10 mm</span></label>
                 <div class="input-group">
                     <input type="range" id="detectStrokeSlider" min="0" max="50" value="10" step="10" oninput="syncInputs('detectStrokeSlider', this.value)">
                     <input type="number" id="detectStroke" class="form-control input-number-small" value="10" min="0" step="10" oninput="syncInputs('detectStroke', this.value)">
@@ -85,7 +90,7 @@
             </div>
 
             <div class="form-group">
-                <label for="pressStrokeSlider">Kontrollü Presleme Stroku <span class="val-display" id="valPress">50 mm</span></label>
+                <label for="pressStrokeSlider"><span data-i18n="lbl_press_stroke">Kontrollü Presleme Stroku</span> <span class="val-display" id="valPress">50 mm</span></label>
                 <div class="input-group">
                     <input type="range" id="pressStrokeSlider" min="0" max="100" value="50" step="10" oninput="syncInputs('pressStrokeSlider', this.value)">
                     <input type="number" id="pressStroke" class="form-control input-number-small" value="50" min="0" step="10" oninput="syncInputs('pressStroke', this.value)">
@@ -93,7 +98,7 @@
             </div>
             
             <div class="form-group">
-                <label for="rpmSlider">Servo Motor Hızı (RPM) <span class="val-display" id="valRPM">1500 RPM</span></label>
+                <label for="rpmSlider"><span data-i18n="lbl_rpm">Servo Motor Hızı (RPM)</span> <span class="val-display" id="valRPM">1500 RPM</span></label>
                 <div class="input-group">
                     <input type="range" id="rpmSlider" min="500" max="2800" value="1500" step="100" oninput="syncInputs('rpmSlider', this.value)">
                     <input type="number" id="rpm" class="form-control input-number-small" value="1500" min="500" max="5500" step="100" oninput="syncInputs('rpm', this.value)">
@@ -101,30 +106,31 @@
             </div>
             
             <div class="form-group" style="margin-top: 20px;">
-                <button type="button" class="btn btn-primary" style="width: 100%; padding: 12px; background: #30363d; border: 1px solid #ff4d4d; color: white; border-radius: 8px; cursor: pointer; transition: 0.3s;" onclick="resetToDefaults()" onmouseover="this.style.background='#ff4d4d'" onmouseout="this.style.background='#30363d'">Varsayılan Değerlere Dön</button>
+                <button type="button" class="btn btn-primary" style="width: 100%; padding: 12px; background: #30363d; border: 1px solid #ff4d4d; color: white; border-radius: 8px; cursor: pointer; transition: 0.3s;" onclick="resetToDefaults()" onmouseover="this.style.background='#ff4d4d'" onmouseout="this.style.background='#30363d'" data-i18n="btn_reset">Varsayılan Değerlere Dön</button>
                 <button type="button" class="btn btn-primary" style="width: 100%; padding: 12px; margin-top: 12px; background: transparent; border: 1px solid #2980b9; color: white; border-radius: 8px; cursor: pointer; transition: 0.3s; display: flex; justify-content: center; align-items: center; gap: 8px;" onclick="goToConfigurator()" onmouseover="this.style.background='rgba(41, 128, 185, 0.2)'" onmouseout="this.style.background='transparent'">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <line x1="22" y1="12" x2="2" y2="12"></line>
                         <polyline points="9 19 2 12 9 5"></polyline>
                     </svg>
-                    Satış Konfigüratörüne Dön
+                    <span data-i18n="btn_goto_config">Satış Konfigüratörüne Dön</span>
                 </button>
             </div>
         </div>
 
         <!-- RESULT SECTION -->
         <div class="result-section" style="display: block; opacity: 1; animation: none;">
-            <div class="result-title">Dinamik Kinematik Grafiği</div>
+            <div class="result-title" data-i18n="res_title">Dinamik Kinematik Grafiği</div>
             <div id="chartDiv" style="width: 100%; min-height: 600px; background: #0d1117; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);"></div>
             
             <div class="cycle-time-box" id="cycleTimeBox" style="margin-top: 25px;">
-                <span class="label">Tahmini Çevrim Süresi (Kinematik)</span>
+                <span class="label" data-i18n="res_cycle">Tahmini Çevrim Süresi (Kinematik)</span>
                 <span class="val" id="resCycleTime">0.00 sn</span>
             </div>
         </div>
     </div>
 </div>
 
+<script src="js/i18n.js?v=2"></script>
 <script src="js/script.js?v=2"></script>
 </body>
 </html>

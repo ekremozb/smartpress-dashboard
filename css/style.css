@@ -430,6 +430,48 @@ input[type=range]::-webkit-slider-thumb:hover {
     border-bottom: none;
 }
 
+.header h1 {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    color: var(--text-light);
+}
+.header p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.5);
+    font-weight: 300;
+}
+
+.lang-selector {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 8px;
+    background: rgba(0,0,0,0.3);
+    padding: 4px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+.lang-btn {
+    background: transparent;
+    color: rgba(255,255,255,0.5);
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.lang-btn:hover {
+    color: white;
+}
+.lang-btn.active {
+    background: var(--hktm-red);
+    color: white;
+}
+
 .result-label {
     font-size: 14px;
     font-weight: 400;
