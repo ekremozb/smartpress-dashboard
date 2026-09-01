@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="app_title">SmartPress Kinematik Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://cdn.plot.ly/plotly-2.27.0.min.js"></script>
+</head>
+<body>
+
+<!-- Çevresel Görsel Efektler -->
+<div class="bg-orb-1"></div>
+<div class="bg-orb-2"></div>
+
+<div class="container" id="mainContainer">
+    <div class="header">
+        <div class="logo-container">
+            <img src="assets/hktm-logo.png" alt="HKTM Logo" style="height: 48px; object-fit: contain;">
+        </div>
+        <h1 data-i18n="app_title">SmartPress Kinematik Dashboard</h1>
+        <p data-i18n="app_subtitle">İnteraktif Hareket Profili Simulasyonu</p>
+    </div>
+
+    <div class="content">
+        <!-- FORM SECTION -->
+        <div class="form-section">
+            <h2 data-i18n="form_title_app">Mekanik Limitler ve Modeller</h2>
+            
+            <div class="form-group">
+                <label for="seriesSelect">SmartPress Serisi</label>
+                <select id="seriesSelect" class="form-control" onchange="updateSubModels()">
+                    <option value="SP-EH" selected>SP-EH Serisi (Max 500mm Strok)</option>
+                    <option value="SP-EM">SP-EM Serisi (Max 300mm Strok)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="modelSelect">SmartPress Modeli</label>
+                <select id="modelSelect" class="form-control" onchange="syncLimits()">
+                    <!-- Options populated by JS -->
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="targetForceSlider">Hedef Baskı Kuvveti <span class="val-display" id="valForce">30 kN</span></label>
+                <div class="input-group">
+                    <input type="range" id="targetForceSlider" min="1" max="100" value="30" step="1" oninput="syncInputs('targetForceSlider', this.value)">
+                    <input type="number" id="targetForce" class="form-control input-number-small" value="30" min="1" oninput="syncInputs('targetForce', this.value)">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="totalStrokeSelect">Kullanılacak Toplam Strok</label>
+                <select id="totalStrokeSelect" class="form-control" onchange="syncLimits()">
+                    <!-- Options populated by JS (Standard vs Optional) -->
+                </select>
+            </div>
+
+            <h2 style="margin-top: 30px;">Kinematik Fazlar (dt=0.001s, a=0.25s rampa)</h2>
+
+            <div class="form-group">
+                <label>Hızlı Yaklaşma Stroku (Otomatik) <span class="val-display" id="valFast">100 mm</span></label>
+                <div class="input-group" style="opacity: 0.6; pointer-events: none;">
+                    <input type="range" id="fastStrokeSlider" min="0" max="500" value="100">
+                    <input type="number" id="fastStroke" class="form-control input-number-small" value="100" readonly>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="searchStrokeSlider">Temas Arama Stroku <span class="val-display" id="valSearch">30 mm</span></label>
+                <div class="input-group">
+                    <input type="range" id="searchStrokeSlider" min="0" max="100" value="30" step="10" oninput="syncInputs('searchStrokeSlider', this.value)">
+                    <input type="number" id="searchStroke" class="form-control input-number-small" value="30" min="0" step="10" oninput="syncInputs('searchStroke', this.value)">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="detectStrokeSlider">Temas Algılama Stroku <span class="val-display" id="valDetect">10 mm</span></label>
+                <div class="input-group">
+                    <input type="range" id="detectStrokeSlider" min="0" max="50" value="10" step="10" oninput="syncInputs('detectStrokeSlider', this.value)">
+                    <input type="number" id="detectStroke" class="form-control input-number-small" value="10" min="0" step="10" oninput="syncInputs('detectStroke', this.value)">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="pressStrokeSlider">Kontrollü Presleme Stroku <span class="val-display" id="valPress">50 mm</span></label>
+                <div class="input-group">
+                    <input type="range" id="pressStrokeSlider" min="0" max="100" value="50" step="10" oninput="syncInputs('pressStrokeSlider', this.value)">
+                    <input type="number" id="pressStroke" class="form-control input-number-small" value="50" min="0" step="10" oninput="syncInputs('pressStroke', this.value)">
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="rpmSlider">Servo Motor Hızı (RPM) <span class="val-display" id="valRPM">1500 RPM</span></label>
+                <div class="input-group">
+                    <input type="range" id="rpmSlider" min="500" max="2800" value="1500" step="100" oninput="syncInputs('rpmSlider', this.value)">
+                    <input type="number" id="rpm" class="form-control input-number-small" value="1500" min="500" max="5500" step="100" oninput="syncInputs('rpm', this.value)">
+                </div>
+            </div>
+            
+            <div class="form-group" style="margin-top: 20px;">
+                <button type="button" class="btn btn-primary" style="width: 100%; padding: 12px; background: #30363d; border: 1px solid #ff4d4d; color: white; border-radius: 8px; cursor: pointer; transition: 0.3s;" onclick="resetToDefaults()" onmouseover="this.style.background='#ff4d4d'" onmouseout="this.style.background='#30363d'">Varsayılan Değerlere Dön</button>
+            </div>
+        </div>
+
+        <!-- RESULT SECTION -->
+        <div class="result-section" style="display: block; opacity: 1; animation: none;">
+            <div class="result-title">Dinamik Kinematik Grafiği</div>
+            <div id="chartDiv" style="width: 100%; min-height: 600px; background: #0d1117; border-radius: 12px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);"></div>
+            
+            <div class="cycle-time-box" id="cycleTimeBox" style="margin-top: 25px;">
+                <span class="label">Tahmini Çevrim Süresi (Kinematik)</span>
+                <span class="val" id="resCycleTime">0.00 sn</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="js/script.js?v=2"></script>
+</body>
+</html>
