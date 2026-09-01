@@ -503,5 +503,60 @@ window.onload = async function() {
     } catch (e) {
         console.warn("Reference data could not be loaded:", e);
     }
-    updateSubModels();
+    
+    parseQueryParams();
 };
+
+function parseQueryParams() {
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    if (urlParams.has('tech')) {
+        let tech = urlParams.get('tech'); // 'em' or 'eh'
+        let series = tech === 'em' ? 'SP-EM' : 'SP-EH';
+        document.getElementById('seriesSelect').value = series;
+        updateSubModels(); // This populates models for the series
+    } else {
+        updateSubModels();
+    }
+    
+    if (urlParams.has('force')) {
+        let force = parseFloat(urlParams.get('force'));
+        autoSelectModelByForce(force);
+        document.getElementById('targetForce').value = force;
+        document.getElementById('targetForceSlider').value = force;
+        document.getElementById('valForce').innerText = force + " kN";
+    }
+    
+    if (urlParams.has('pressStroke')) {
+        let press = urlParams.get('pressStroke');
+        document.getElementById('pressStroke').value = press;
+        document.getElementById('pressStrokeSlider').value = press;
+        document.getElementById('valPress').innerText = press + " mm";
+    }
+    
+    syncLimits(); // Recalculates fastStroke and triggers simulation
+}
+
+function autoSelectModelByForce(force) {
+    let series = document.getElementById('seriesSelect').value;
+    let availableModels = seriesModels[series];
+    let selected = availableModels[0];
+    for (let model of availableModels) {
+        if (force <= limits[model].maxForce) {
+            selected = model;
+            break;
+        }
+    }
+    document.getElementById('modelSelect').value = selected;
+}
+
+function goToConfigurator() {
+    let force = document.getElementById('targetForce').value;
+    let fastStroke = document.getElementById('fastStroke').value; 
+    let pressStroke = document.getElementById('pressStroke').value;
+    let series = document.getElementById('seriesSelect').value;
+    let tech = series === 'SP-EM' ? 'em' : 'eh';
+    
+    let url = `https://smartpress-ebon.vercel.app/?force=${force}&fastStroke=${fastStroke}&pressStroke=${pressStroke}&tech=${tech}`;
+    window.open(url, '_blank');
+}
