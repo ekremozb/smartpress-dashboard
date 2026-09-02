@@ -442,16 +442,43 @@ input[type=range]::-webkit-slider-thumb:hover {
     font-weight: 300;
 }
 
-.lang-selector {
+.header-top-bar {
     position: absolute;
-    top: 20px;
+    top: 15px;
     right: 20px;
     display: flex;
-    gap: 8px;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+}
+.header-nav-btn {
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.6);
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Inter', sans-serif;
+}
+.header-nav-btn:hover {
+    background: rgba(227, 24, 55, 0.15);
+    border-color: var(--hktm-red);
+    color: white;
+}
+.lang-selector {
+    display: flex;
+    gap: 0;
     background: rgba(0,0,0,0.3);
-    padding: 4px;
+    padding: 0;
     border-radius: 8px;
     border: 1px solid rgba(255,255,255,0.1);
+    overflow: hidden;
 }
 .lang-btn {
     background: transparent;
