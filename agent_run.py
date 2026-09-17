@@ -59,7 +59,7 @@ async def main():
             await page.wait_for_timeout(500)
             
             max_rpm = await page.evaluate("document.getElementById('rpmSlider').max")
-            print(f"EM Max RPM Beklenen: 5500, Gerceklesen: {max_rpm}")
+            print(f"EM Max RPM Beklenen: 5000, Gerceklesen: {max_rpm}")
             
             options = await page.evaluate("Array.from(document.getElementById('totalStrokeSelect').options).map(o => o.value)")
             print(f"EM Toplam Strok Secenekleri (750 olmamali): {options}")

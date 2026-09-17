@@ -20,7 +20,17 @@ const translations = {
         "opt_eh_series": "SP-EH Serisi (Max 500mm Strok)",
         "opt_em_series": "SP-EM Serisi (Max 500mm Strok)",
         "opt_std_stroke": "Standart Maks. Strok",
-        "opt_opt_stroke": "Opsiyonel Maks. Strok (750 mm)"
+        "opt_opt_stroke": "Opsiyonel Maks. Strok (750 mm)",
+        "phase_fast": "Hızlı Yaklaşma",
+        "phase_search": "Temas Arama",
+        "phase_detect": "Temas Algılama",
+        "phase_press": "Kontrollü Presleme",
+        "phase_hold": "Bekleme (1.0s)",
+        "phase_retract": "Kontrollü Geri Çekilme",
+        "trace_vel_calc": "Hız (Hesaplanan)",
+        "trace_pos_calc": "Pozisyon (Hesaplanan)",
+        "trace_vel_ref": "Hız (Referans)",
+        "trace_pos_ref": "Pozisyon (Referans)"
     },
     en: {
         "app_title": "SmartPress Kinematic Dashboard",
@@ -43,7 +53,17 @@ const translations = {
         "opt_eh_series": "SP-EH Series (Max 500mm Stroke)",
         "opt_em_series": "SP-EM Series (Max 500mm Stroke)",
         "opt_std_stroke": "Standard Max Stroke",
-        "opt_opt_stroke": "Optional Max Stroke (750 mm)"
+        "opt_opt_stroke": "Optional Max Stroke (750 mm)",
+        "phase_fast": "Rapid Approach",
+        "phase_search": "Contact Search",
+        "phase_detect": "Contact Detection",
+        "phase_press": "Controlled Pressing",
+        "phase_hold": "Hold Phase (1.0s)",
+        "phase_retract": "Controlled Retract",
+        "trace_vel_calc": "Speed (Calculated)",
+        "trace_pos_calc": "Position (Calculated)",
+        "trace_vel_ref": "Speed (Reference)",
+        "trace_pos_ref": "Position (Reference)"
     }
 };
 

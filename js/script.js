@@ -19,12 +19,12 @@ const seriesModels = {
 };
 
 const modelReferences = {
-    "SP-EM12/15": { baseRpm: 5500, fastStroke: 410.0, searchStroke: 30.0, detectStroke: 10.0, pressStroke: 50.0, v_fast: 130.95238095238093, v_search: 95.23809523809524, v_detect: 95.23809523809524, v_press: 95.23809523809524, v_return: -130.95238095238093 },
-    "SP-EM25/30 Twin": { baseRpm: 5500, fastStroke: 410.0, searchStroke: 30.0, detectStroke: 10.0, pressStroke: 50.0, v_fast: 130.95238095238093, v_search: 95.23809523809524, v_detect: 95.23809523809524, v_press: 95.23809523809524, v_return: -130.95238095238093 },
-    "SP-EH30/35": { baseRpm: 3000, fastStroke: 410.0, searchStroke: 30.0, detectStroke: 10.0, pressStroke: 50.0, v_fast: 183.39, v_search: 50.93, v_detect: 25.46, v_press: 22.07, v_return: -197.40 },
-    "SP-EH45/55": { baseRpm: 3000, fastStroke: 410.0, searchStroke: 30.0, detectStroke: 10.0, pressStroke: 50.0, v_fast: 117.37, v_search: 32.08, v_detect: 16.04, v_press: 13.90, v_return: -122.26 },
-    "SP-EH65/80": { baseRpm: 3000, fastStroke: 410.0, searchStroke: 30.0, detectStroke: 10.0, pressStroke: 50.0, v_fast: 101.50, v_search: 27.85, v_detect: 13.93, v_press: 12.07, v_return: -97.52 },
-    "SP-EH100/125": { baseRpm: 3000, fastStroke: 410.0, searchStroke: 30.0, detectStroke: 10.0, pressStroke: 50.0, v_fast: 64.96, v_search: 17.83, v_detect: 8.91, v_press: 7.72, v_return: -62.41 }
+    "SP-EM12/15": { baseRpm: 5000, fastStroke: 410.0, searchStroke: 30.0, detectStroke: 10.0, pressStroke: 50.0, v_fast: 119.05, v_search: 71.43, v_detect: 71.43, v_press: 71.43, v_return: -119.05 },
+    "SP-EM25/30 Twin": { baseRpm: 5000, fastStroke: 410.0, searchStroke: 30.0, detectStroke: 10.0, pressStroke: 50.0, v_fast: 119.05, v_search: 71.43, v_detect: 71.43, v_press: 71.43, v_return: -119.05 },
+    "SP-EH30/35": { baseRpm: 2800, fastStroke: 410.0, searchStroke: 30.0, detectStroke: 10.0, pressStroke: 50.0, v_fast: 177.98, v_search: 49.43, v_detect: 24.71, v_press: 21.42, v_return: -191.58 },
+    "SP-EH45/55": { baseRpm: 2800, fastStroke: 410.0, searchStroke: 30.0, detectStroke: 10.0, pressStroke: 50.0, v_fast: 113.91, v_search: 31.13, v_detect: 15.57, v_press: 13.49, v_return: -118.65 },
+    "SP-EH65/80": { baseRpm: 2800, fastStroke: 410.0, searchStroke: 30.0, detectStroke: 10.0, pressStroke: 50.0, v_fast: 102.97, v_search: 27.03, v_detect: 13.52, v_press: 11.71, v_return: -98.93 },
+    "SP-EH100/125": { baseRpm: 2800, fastStroke: 410.0, searchStroke: 30.0, detectStroke: 10.0, pressStroke: 50.0, v_fast: 65.90, v_search: 17.30, v_detect: 8.65, v_press: 7.72, v_return: -63.30 }
 };
 
 function formatModelName(model) {
@@ -90,7 +90,7 @@ function syncLimits() {
     const limit = limits[model];
     
     // Determine RPM max
-    let maxRpm = series === 'SP-EH' ? 3000 : 5500;
+    let maxRpm = series === 'SP-EH' ? 2800 : 5000;
     document.getElementById('rpmSlider').max = maxRpm;
     document.getElementById('rpm').max = maxRpm;
     
@@ -287,15 +287,17 @@ function calcPhase(stroke, target_v, start_v, t_acc_phase, t_dec_phase, is_forwa
 }
 
 function resetToDefaults() {
+    let series = document.getElementById('seriesSelect').value;
     let rawModel = document.getElementById('modelSelect').value;
     let modelName = formatModelName(rawModel);
     let ref = modelReferences[modelName];
     if (!ref) {
-        ref = { baseRpm: 1500, searchStroke: 30, detectStroke: 10, pressStroke: 50 }; // fallback
+        ref = { baseRpm: (series === 'SP-EH' ? 2800 : 5000), searchStroke: 30, detectStroke: 10, pressStroke: 50 }; // fallback
     }
 
-    document.getElementById('targetForce').value = 29.6;
-    document.getElementById('targetForceSlider').value = 29.6;
+    let defaultForce = series === 'SP-EH' ? 30 : (modelName.includes('Twin') ? 25 : 12);
+    document.getElementById('targetForce').value = defaultForce;
+    document.getElementById('targetForceSlider').value = defaultForce;
     document.getElementById('searchStroke').value = ref.searchStroke;
     document.getElementById('searchStrokeSlider').value = ref.searchStroke;
     document.getElementById('detectStroke').value = ref.detectStroke;
@@ -306,7 +308,7 @@ function resetToDefaults() {
     document.getElementById('rpmSlider').value = ref.baseRpm;
     
     // UI Label textini de guncelle
-    document.getElementById('valForce').innerText = '29.6 kN';
+    document.getElementById('valForce').innerText = defaultForce + ' kN';
     document.getElementById('valSearch').innerText = ref.searchStroke + ' mm';
     document.getElementById('valDetect').innerText = ref.detectStroke + ' mm';
     document.getElementById('valPress').innerText = ref.pressStroke + ' mm';
@@ -351,12 +353,12 @@ function runSimulation() {
     let pressStroke = parseFloat(document.getElementById('pressStroke').value) || 0;
     
     let phases = [
-        { name: 'Hızlı Yaklaşma', stroke: fastStroke, v: v_fast, t_acc: 0.25, t_dec: fast_t_dec, color: 'rgba(33, 150, 243, 0.3)' },
-        { name: 'Temas Arama', stroke: searchStroke, v: v_search, t_acc: 0.25, t_dec: 0.0, color: 'rgba(255, 152, 0, 0.3)' },
-        { name: 'Temas Algılama', stroke: detectStroke, v: v_detect, t_acc: 0.0, t_dec: 0.0, color: 'rgba(255, 193, 7, 0.3)' },
-        { name: 'Kontrollü Presleme', stroke: pressStroke, v: v_press, t_acc: 0.0, t_dec: 0.0, color: 'rgba(244, 67, 54, 0.3)' },
-        { name: 'Bekleme (1.0s)', stroke: 0, v: 0, t_acc: 0, t_dec: 0, color: 'rgba(156, 39, 176, 0.3)', is_wait: true, duration: 1.0 },
-        { name: 'Kontrollü Geri Çekilme', stroke: (fastStroke+searchStroke+detectStroke+pressStroke), v: v_return, t_acc: 0.25, t_dec: 0.25, color: 'rgba(76, 175, 80, 0.3)', is_forward: false }
+        { name: t('phase_fast'), stroke: fastStroke, v: v_fast, t_acc: 0.25, t_dec: fast_t_dec, color: 'rgba(33, 150, 243, 0.3)' },
+        { name: t('phase_search'), stroke: searchStroke, v: v_search, t_acc: 0.25, t_dec: 0.0, color: 'rgba(255, 152, 0, 0.3)' },
+        { name: t('phase_detect'), stroke: detectStroke, v: v_detect, t_acc: 0.0, t_dec: 0.0, color: 'rgba(255, 193, 7, 0.3)' },
+        { name: t('phase_press'), stroke: pressStroke, v: v_press, t_acc: 0.0, t_dec: 0.0, color: 'rgba(244, 67, 54, 0.3)' },
+        { name: t('phase_hold'), stroke: 0, v: 0, t_acc: 0, t_dec: 0, color: 'rgba(156, 39, 176, 0.3)', is_wait: true, duration: 1.0 },
+        { name: t('phase_retract'), stroke: (fastStroke+searchStroke+detectStroke+pressStroke), v: v_return, t_acc: 0.25, t_dec: 0.25, color: 'rgba(76, 175, 80, 0.3)', is_forward: false }
     ];
     
     let total_time = [];
@@ -418,12 +420,13 @@ function runSimulation() {
         });
     }
     
-    document.getElementById('resCycleTime').innerText = global_t.toFixed(2) + " sn";
+    let unitSec = currentLanguage === 'en' ? ' s' : ' sn';
+    document.getElementById('resCycleTime').innerText = global_t.toFixed(2) + unitSec;
     
     let trace1 = {
         x: total_time,
         y: total_vel,
-        name: 'Hız (Hesaplanan)',
+        name: t('trace_vel_calc'),
         type: 'scatter',
         line: {color: 'white', width: 2}
     };
@@ -431,7 +434,7 @@ function runSimulation() {
     let trace2 = {
         x: total_time,
         y: total_pos,
-        name: 'Pozisyon (Hesaplanan)',
+        name: t('trace_pos_calc'),
         type: 'scatter',
         yaxis: 'y2',
         line: {color: '#ff4d4d', width: 2}
@@ -450,7 +453,7 @@ function runSimulation() {
         let trace3 = {
             x: ref_time,
             y: ref_vel,
-            name: 'Hız (Referans)',
+            name: t('trace_vel_ref'),
             type: 'scatter',
             line: {color: 'rgba(255, 255, 255, 0.4)', width: 2, dash: 'dot'}
         };
@@ -458,7 +461,7 @@ function runSimulation() {
         let trace4 = {
             x: ref_time,
             y: ref_pos,
-            name: 'Pozisyon (Referans)',
+            name: t('trace_pos_ref'),
             type: 'scatter',
             yaxis: 'y2',
             line: {color: 'rgba(255, 77, 77, 0.4)', width: 2, dash: 'dot'}
